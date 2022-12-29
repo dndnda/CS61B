@@ -134,7 +134,7 @@
 //
 //    }
 //}
-public class ArrayDeque <T>{
+public class ArrayDeque<T> {
 
     private T[] arr;
     private int size;
@@ -173,14 +173,14 @@ public class ArrayDeque <T>{
      * @return
      */
     private int minusOne(int index) {
-        if(index == 0) {
+        if (index == 0) {
             return length - 1;
         }
         return index - 1;
     }
 
-    private int plusOne(int index, int length) {
-        if(index == length - 1) {
+    private int plusOne(int index, int module) {
+        if (index == module - 1) {
             return 0;
         }
         return index + 1;
@@ -192,9 +192,9 @@ public class ArrayDeque <T>{
         int ptr1 = front;
         int ptr2 = length;
 
-        while(ptr1 != last) {
+        while (ptr1 != last) {
             newArr[ptr2] = arr[ptr1];
-            ptr1 = plusOne(ptr1,length);
+            ptr1 = plusOne(ptr1, length);
             ptr2 = plusOne(ptr2, length * 2);
         }
 
@@ -210,7 +210,7 @@ public class ArrayDeque <T>{
         int ptr1 = front;
         int ptr2 = length / 4;
 
-        while(ptr1 != last) {
+        while (ptr1 != last) {
             newArr[ptr2] = arr[ptr1];
             ptr1 = plusOne(ptr1, length);
             ptr2 = plusOne(ptr2, length / 2);
@@ -223,7 +223,7 @@ public class ArrayDeque <T>{
     }
 
     public void addFirst(T item) {
-        if(size == length - 1) {
+        if (size == length - 1) {
             grow();
         }
 
@@ -233,19 +233,19 @@ public class ArrayDeque <T>{
     }
 
     public void addLast(T item) {
-        if(size == length - 1) {
+        if (size == length - 1) {
             grow();
         }
         arr[last] = item;
         last = plusOne(last, length);
-        size++ ;
+        size++;
     }
 
     public T removeFirst() {
-        if(length >= 16 && length / size >= 4) {
+        if (length >= 16 && length / size >= 4) {
             shrink();
         }
-        if(size == 0) {
+        if (size == 0) {
             return null;
         }
         T temp = arr[front];
@@ -256,10 +256,10 @@ public class ArrayDeque <T>{
     }
 
     public T removeLast() {
-        if(length >= 16 && length / size >= 4) {
+        if (length >= 16 && length / size >= 4) {
             shrink();
         }
-        if(size == 0) {
+        if (size == 0) {
             return null;
         }
 
@@ -273,7 +273,7 @@ public class ArrayDeque <T>{
     public T get(int index) {
         int ptr = front;
 
-        while(ptr != last) {
+        while (ptr != last) {
             if(index == 0) {
                 return arr[ptr];
             }

@@ -35,7 +35,7 @@ public class LinkedListDeque<T> {
         first.next = new Node(item, first, first.next);
         temp.prev = first.next;
 
-        size ++;
+        size++;
     }
 
     public void addLast(T item) {
@@ -43,7 +43,7 @@ public class LinkedListDeque<T> {
         last.prev = new Node(item, temp, last);
         temp.next = last.prev;
 
-        size ++;
+        size++;
     }
 
     public boolean isEmpty() {
@@ -59,7 +59,7 @@ public class LinkedListDeque<T> {
 
     public void printDeque() {
         Node temp = first.next;
-        while(temp.next != last) {
+        while (temp.next != last) {
             System.out.print(temp.item + " ");
             temp = temp.next;
         }
@@ -71,11 +71,11 @@ public class LinkedListDeque<T> {
      * @return
      */
     public T removeFirst() {
-        if(size == 0) {
+        if (size == 0) {
             return null;
         }
 
-        size --;
+        size--;
 
         Node temp = first.next;
         first.next = first.next.next;
@@ -89,10 +89,10 @@ public class LinkedListDeque<T> {
      * @return
      */
     public T removeLast() {
-        if(size == 0) {
+        if (size == 0) {
             return null;
         }
-        size --;
+        size--;
         Node temp = last.prev;
         last.prev = last.prev.prev;
         last.prev.next = last;
@@ -106,20 +106,20 @@ public class LinkedListDeque<T> {
      * @return
      */
     public T get(int index) {
-        if(index >= size) {
+        if (index >= size) {
             return null;
         }
         Node temp = first.next;
-        while(index > 0) {
+        while (index > 0) {
             temp = temp.next;
-            index --;
+            index--;
         }
         return temp.item;
     }
 
     private T getRecursiveHelper(int index, Node start) {
 
-        if(index == 0) {
+        if (index == 0) {
             return start.item;
         }
         return getRecursiveHelper(index - 1, start.next);
@@ -127,7 +127,7 @@ public class LinkedListDeque<T> {
 
     public T getRecursive(int index) {
 
-        if(index >= size) {
+        if (index >= size) {
             return null;
         }
 
