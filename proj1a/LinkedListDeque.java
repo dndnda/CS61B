@@ -1,5 +1,3 @@
-import java.util.TreeMap;
-
 public class LinkedListDeque<T> {
 
     /** Node class for Linked list. */
@@ -119,7 +117,7 @@ public class LinkedListDeque<T> {
         return temp.item;
     }
 
-    public T getRecursiveHelper(int index, Node start) {
+    private T getRecursiveHelper(int index, Node start) {
 
         if(index == 0) {
             return start.item;
