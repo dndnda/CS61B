@@ -1,9 +1,8 @@
 package hw2;
 
 public class PercolationFactory {
-
-    public Percolation getPercolation(int n) {
-        return new Percolation(n);
+    public Percolation make(int N) {
+        return new Percolation(N);
     }
 
 }

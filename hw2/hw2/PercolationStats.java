@@ -17,7 +17,7 @@ public class PercolationStats {
         sqrtT = Math.sqrt(T);
 
         for (int i = 0; i < T; i++) {
-            Percolation p = pf.getPercolation(N);
+            Percolation p = pf.make(N);
             while (!p.percolates()) {
                 int row = StdRandom.uniform(N);
                 int col = StdRandom.uniform(N);
