@@ -118,13 +118,16 @@ public class Percolation {
             if (isOpen[indexes[i]]) {
                 uf.union(index, indexes[i]);
             }
-        }
-
-        for (int i = 0; i < openInTop.size(); i++) {
-            if (uf.connected(openInTop.get(i), index)) {
+            if (isFull[indexes[i]]) {
                 isFull[index] = true;
             }
         }
+
+//        for (int i = 0; i < openInTop.size(); i++) {
+//            if (uf.connected(openInTop.get(i), index)) {
+//                isFull[index] = true;
+//            }
+//        }
     }
     // is the site (row, col) open?
     public boolean isOpen(int row, int col) {
@@ -147,7 +150,7 @@ public class Percolation {
     }
     // does the system percolate?
     public boolean percolates() {
-        if (percolated = true) {
+        if (percolated == true) {
             return true;
         }
 
