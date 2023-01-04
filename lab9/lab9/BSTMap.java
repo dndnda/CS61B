@@ -99,10 +99,6 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     @Override
     public void put(K key, V value) {
         validKey(key);
-        if (value == null) {
-            remove(key);
-            return;
-        }
         root = putHelper(key, value, root);
     }
 
@@ -117,9 +113,10 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     /* Returns a Set view of the keys contained in this map. */
     @Override
     public Set<K> keySet() {
-        Set<K> set = new HashSet<>();
-        keySetHelper(root, set);
-        return set;
+//        Set<K> set = new HashSet<>();
+//        keySetHelper(root, set);
+//        return set;
+        throw new UnsupportedOperationException();
     }
 
     private void keySetHelper(Node node, Set<K> set) {
