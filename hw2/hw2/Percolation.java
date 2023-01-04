@@ -108,7 +108,7 @@ public class Percolation {
 
         if (row == 0) {
             openInTop.add(toIndex(row, col));
-            isFull[index] = true;
+        //    isFull[index] = true;
         }
         if (row == N - 1) {
             openInBottom.add(toIndex(row, col));
@@ -119,16 +119,8 @@ public class Percolation {
             if (isOpen[indexes[i]]) {
                 uf.union(index, indexes[i]);
             }
-            if (isFull[indexes[i]]) {
-                isFull[index] = true;
-            }
         }
 
-//        for (int i = 0; i < openInTop.size(); i++) {
-//            if (uf.connected(openInTop.get(i), index)) {
-//                isFull[index] = true;
-//            }
-//        }
     }
     // is the site (row, col) open?
     public boolean isOpen(int row, int col) {
@@ -142,7 +134,17 @@ public class Percolation {
         if (!(row >= 0 && row < N && col >= 0 && col < N)) {
             throw new IllegalArgumentException();
         }
-        return isFull[toIndex(row, col)];
+        int index = toIndex(row, col);
+        if (isFull[index]) {
+            return true;
+        }
+        for (int i = 0; i < openInTop.size(); i++) {
+            if (uf.connected(openInTop.get(i), index)) {
+                isFull[index] = true;
+                break;
+            }
+        }
+        return isFull[index];
     }
 
     // number of open sites
@@ -169,14 +171,12 @@ public class Percolation {
     // use for unit testing (not required)
     public static void main(String[] args)  {
         Percolation p = new Percolation(5);
-        p.open(0, 2);
-        p.open(1, 2);
-        p.open(1, 1);
-        p.open(2, 1);
-//        p.open(3, 1);
-        p.open(4, 1);
-        p.open(4, 1);
 
+        p.open(4, 1);
+        p.open(3, 1);
+        p.open(2, 1);
+        p.open(1, 1);
+        p.open(0, 2);
         StdOut.println(p.isFull(2, 1));
         StdOut.println(p.percolates());
         StdOut.println(p.numberOfOpenSites());
