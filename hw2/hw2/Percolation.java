@@ -20,6 +20,10 @@ public class Percolation {
 
     // create N-by-N grid, with all sites initially blocked
     public Percolation(int N) {
+        if (N <= 0) {
+            throw new IllegalArgumentException();
+        }
+
         uf = new WeightedQuickUnionUF(N * N);
         this.N = N;
         isOpen = new boolean[N * N];
@@ -90,6 +94,10 @@ public class Percolation {
 
     // open the site (row, col) if it is not open already
     public void open(int row, int col) {
+        if (!(row >= 0 && row < N && col >= 0 && col < N)) {
+            throw new IllegalArgumentException();
+        }
+
         if (isOpen(row, col)) {
             return;
         }
@@ -111,34 +119,48 @@ public class Percolation {
                 uf.union(index, indexes[i]);
             }
         }
+
+        for (int i = 0; i < openInTop.size(); i++) {
+            if (uf.connected(openInTop.get(i), index)) {
+                isFull[index] = true;
+            }
+        }
     }
     // is the site (row, col) open?
     public boolean isOpen(int row, int col) {
+        if (!(row >= 0 && row < N && col >= 0 && col < N)) {
+            throw new IllegalArgumentException();
+        }
         return isOpen[toIndex(row, col)];
     }
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
-        for (int i = 0; i < openInTop.size(); i++) {
-            if (uf.connected(openInTop.get(i), toIndex(row, col))) {
-                return true;
-            }
+        if (!(row >= 0 && row < N && col >= 0 && col < N)) {
+            throw new IllegalArgumentException();
         }
-        return false;
+        return isFull[toIndex(row, col)];
     }
+
     // number of open sites
     public int numberOfOpenSites() {
         return numbersOfOpenSites;
     }
     // does the system percolate?
     public boolean percolates() {
+        if (percolated = true) {
+            return true;
+        }
+
         for (int i = 0; i < openInBottom.size(); i++) {
             for (int j = 0; j < openInTop.size(); j++) {
                 if (uf.connected(openInTop.get(j), openInBottom.get(i))) {
+                    percolated = true;
                     return true;
                 }
             }
         }
         return false;
+
     }
     // use for unit testing (not required)
     public static void main(String[] args)  {
