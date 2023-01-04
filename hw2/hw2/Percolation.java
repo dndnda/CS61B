@@ -108,6 +108,7 @@ public class Percolation {
 
         if (row == 0) {
             openInTop.add(toIndex(row, col));
+            isFull[index] = true;
         }
         if (row == N - 1) {
             openInBottom.add(toIndex(row, col));
@@ -172,11 +173,11 @@ public class Percolation {
         p.open(1, 2);
         p.open(1, 1);
         p.open(2, 1);
-        p.open(3, 1);
+//        p.open(3, 1);
         p.open(4, 1);
         p.open(4, 1);
 
-        StdOut.println(p.isFull(4, 1));
+        StdOut.println(p.isFull(2, 1));
         StdOut.println(p.percolates());
         StdOut.println(p.numberOfOpenSites());
 
