@@ -17,8 +17,12 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     private ArrayMap<K, V>[] buckets;
     private int size;
 
-    private int loadFactor() {
-        return size / buckets.length;
+    private double loadFactor() {
+        return size * 1.0 / buckets.length;
+    }
+
+    private void validKey(K key) {
+        if (key == null) throw new IllegalArgumentException();
     }
 
     public MyHashMap() {
@@ -53,19 +57,56 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      */
     @Override
     public V get(K key) {
-        throw new UnsupportedOperationException();
+        validKey(key);
+        int index = hash(key);
+        ArrayMap<K, V>arrayMaps = buckets[index];
+        //if (arrayMaps == null) return null;
+
+        return arrayMaps.get(key);
     }
 
     /* Associates the specified value with the specified key in this map. */
     @Override
     public void put(K key, V value) {
-        throw new UnsupportedOperationException();
+        validKey(key);
+
+        int index = hash(key);
+        if (buckets[index].size() != 0) {
+            for (K k: buckets[index]) {
+                if (k.equals(key)) {
+                    buckets[index].put(key, value);
+                    return;
+                }
+
+            }
+        }
+        size++;
+        buckets[index].put(key, value);
+        if (loadFactor() > MAX_LF) {
+            resize();
+        }
     }
 
+    private void resize() {
+        ArrayMap<K, V>[] temp = buckets;
+        buckets = new ArrayMap[buckets.length * 2];
+        for (int i = 0; i < buckets.length; i++) {
+            buckets[i] = new ArrayMap();
+        }
+
+        for (int i = 0; i < temp.length; i++) {
+            ArrayMap<K, V> arrayMap = temp[i];
+            //if (arrayMap.size() == 0) continue;
+            for(K k: arrayMap.keySet()) {
+                int index = hash(k);
+                buckets[index].put(k, temp[i].get(k));
+            }
+        }
+    }
     /* Returns the number of key-value mappings in this map. */
     @Override
     public int size() {
-        throw new UnsupportedOperationException();
+        return size;
     }
 
     //////////////// EVERYTHING BELOW THIS LINE IS OPTIONAL ////////////////
