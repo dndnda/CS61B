@@ -113,18 +113,17 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     /* Returns a Set view of the keys contained in this map. */
     @Override
     public Set<K> keySet() {
-//        Set<K> set = new HashSet<>();
-//        keySetHelper(root, set);
-//        return set;
-        throw new UnsupportedOperationException();
+        Set<K> set = new HashSet<>();
+        keySetHelper(root, set);
+        return set;
     }
 
     private void keySetHelper(Node node, Set<K> set) {
-        while (node != null) {
-            set.add(node.key);
-            keySetHelper(node.left, set);
-            keySetHelper(node.right, set);
-        }
+        if (node == null) return;
+
+        keySetHelper(node.left, set);
+        set.add(node.key);
+        keySetHelper(node.right, set);
     }
     /** Removes KEY from the tree if present
      *  returns VALUE removed,
@@ -132,8 +131,62 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public V remove(K key) {
-        throw new UnsupportedOperationException();
+        validKey(key);
+        return (V)removeHelper(key, root)[0];
     }
+
+    private Object[] removeHelper(K key, Node node) {
+        if (node == null) return null;
+
+        int cmp = key.compareTo(node.key);
+        Object[] o = new Object[2];
+        if (cmp == 0) {
+            o[0] = node.value;
+            if (node.left == null) {
+                node = node.right;
+            }
+            else if (node.right == null) {
+                node = node.left;
+            }
+            else {
+                Node t = node;
+                node = min(t.right);
+                node.left = t.left;
+                node.right = deleteMin(t.right);
+            }
+            size--;
+            o[1] = node;
+            return o;
+        }
+        else if (cmp > 0) {
+            o = removeHelper(key, node.right);
+            node.right = (Node) o[1];
+            o[1] = node;
+            return o;
+        }
+        else {
+            o = removeHelper(key, node.left);
+            node.left= (Node) o[1];
+            o[1] = node;
+            return o;
+        }
+    }
+
+    private Node deleteMin(Node node) {
+        if (node.left == null) {
+            node = node.right;
+            return node;
+        }
+        return deleteMin(node.left);
+    }
+
+    private Node min(Node node) {
+        if (node.left == null) {
+            return node;
+        }
+        else return min(node.left);
+    }
+
 
     /** Removes the key-value entry for the specified key only if it is
      *  currently mapped to the specified value.  Returns the VALUE removed,
@@ -141,17 +194,19 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      **/
     @Override
     public V remove(K key, V value) {
-        throw new UnsupportedOperationException();
+        validKey(key);
+        if (!get(key).equals(value)) return null;
+        return (V)removeHelper(key, root)[0];
     }
 
     @Override
     public Iterator<K> iterator() {
-        throw new UnsupportedOperationException();
+        return new MyIterator<>();
     }
 
     private class MyIterator<K> implements Iterator<K> {
 
-        Set<K> set = (Set<K>) keySet().iterator();
+        Set<K> set = (Set<K>) keySet();
         Iterator<K> iterator = set.iterator();
 
         @Override
@@ -161,7 +216,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
         @Override
         public K next() {
-            return null;
+            return iterator.next();
         }
     }
 }
