@@ -1,4 +1,5 @@
 import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.StdOut;
 
 public class MergeSort {
     /**
@@ -34,8 +35,14 @@ public class MergeSort {
     /** Returns a queue of queues that each contain one item from items. */
     private static <Item extends Comparable> Queue<Queue<Item>>
             makeSingleItemQueues(Queue<Item> items) {
-        // Your code here!
-        return null;
+
+        Queue<Queue<Item>> queues = new Queue<>();
+        while (!items.isEmpty()) {
+            Queue<Item> temp = new Queue<>();
+            temp.enqueue(items.dequeue());
+            queues.enqueue(temp);
+        }
+        return queues;
     }
 
     /**
@@ -53,14 +60,52 @@ public class MergeSort {
      */
     private static <Item extends Comparable> Queue<Item> mergeSortedQueues(
             Queue<Item> q1, Queue<Item> q2) {
-        // Your code here!
-        return null;
+
+        Queue<Item> queue = new Queue<>();
+        while (!q1.isEmpty() || !q2.isEmpty()) {
+            queue.enqueue(getMin(q1, q2));
+        }
+        return  queue;
     }
 
     /** Returns a Queue that contains the given items sorted from least to greatest. */
     public static <Item extends Comparable> Queue<Item> mergeSort(
             Queue<Item> items) {
-        // Your code here!
-        return items;
+
+        if (items.isEmpty() || items.size() == 1) {
+            return items;
+        }
+
+        Queue<Queue<Item>> queues = makeSingleItemQueues(items);
+
+        while (queues.size() > 1) {
+            Queue<Item> t1 = queues.dequeue();
+            Queue<Item> t2 = queues.dequeue();
+            queues.enqueue(mergeSortedQueues(t1, t2));
+        }
+        return queues.dequeue();
+    }
+
+    public static void main(String[] args) {
+        Queue<String> queue = new Queue<>();
+        queue.enqueue("liming");
+        queue.enqueue("wangsiyi");
+        queue.enqueue("lijiahao");
+        queue.enqueue("shenji");
+        queue.enqueue("abunuqi");
+        queue.enqueue("bifujian");
+        queue.enqueue("wangdawei");
+
+        StdOut.print("Before sorting the origin queue: ");
+        StdOut.println(queue.toString());
+
+        Queue<String> q = mergeSort(queue);
+        StdOut.print("After sorting the origin queue: ");
+        StdOut.println(queue.toString());
+
+        StdOut.print("Returning queue: ");
+        StdOut.println(q.toString());
+
+
     }
 }
